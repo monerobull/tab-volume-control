@@ -7,6 +7,8 @@ A lightweight Firefox extension to set the audio volume of individual websites. 
 - Per-site volume control from 0–100%, saved automatically
 - Mute / unmute with one click (restores your previous level)
 - Works with both plain `<audio>`/`<video>` elements and sites that use the Web Audio API
+- Acts as a multiplier on top of the site's own volume control, so a site's
+  built-in slider (e.g. YouTube's) keeps working alongside it
 - Embedded cross-origin players (e.g. iframes) inherit the parent page's setting
 - Visual indicator for tabs that are currently producing audio
 - Leaves a site's audio untouched until you actually set a volume for it
@@ -29,8 +31,11 @@ tab of the same site and are remembered for next time.
 ## How it works
 
 - A content script injects a small page-context script (`content_scripts/inject.js`)
-  that hooks `HTMLMediaElement` and the Web Audio API so volume can be applied to
-  media elements and Web Audio graphs alike.
+  that hooks `HTMLMediaElement` and the Web Audio API. It intercepts the
+  element's `volume` property so the chosen level is applied as a multiplier
+  (`output = siteVolume × extensionVolume`), letting a site's own volume control
+  keep functioning, and uses a Web Audio gain node for sites that route audio
+  through the Web Audio API.
 - A background script (`background.js`) resolves the requesting frame's
   **top-level** host, so cross-origin iframes get the volume set for the page
   they're embedded in.
