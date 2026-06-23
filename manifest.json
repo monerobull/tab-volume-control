@@ -37,6 +37,9 @@
     "48": "icons/icon.svg",
     "96": "icons/icon.svg"
   },
+  "data_collection_permissions": {
+    "description": "This extension does not collect or transmit any user data. All volume settings are stored locally in your browser using browser.storage.local and never leave your device."
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "tab-volume-control@addon",
